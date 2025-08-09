@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Майло — мини-вики</title>
+<style>
+  :root {
+    --bg: #0a0f14;
+    --accent: #9dd7ff;
+    --muted: #9ba8b5;
+    --card: rgba(255,255,255,0.05);
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(180deg, #060b10, #0a0f14);
+    color: white;
+  }
+  header {
+    text-align: center;
+    padding: 20px;
+  }
+  header img {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 2px solid var(--accent);
+  }
+  h1 {
+    margin: 12px 0 0;
+    font-size: 28px;
+    color: var(--accent);
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  nav button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: var(--accent);
+    color: #000;
+    font-weight: 600;
+  }
+  nav button.active {
+    background: #fff;
+    color: #000;
+  }
+  main {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+  }
+  .card {
+    background: var(--card);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .tab {
+    display: none;
+  }
+  .tab.active {
+    display: block;
+  }
+  /* Галерея */
+  .gallery-container {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .gallery-slide {
+    display: none;
+    transition: opacity 0.5s ease;
+  }
+  .gallery-slide img {
+    width: 100%;
+    display: block;
+  }
+  .gallery-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+  }
+  .gallery-controls button {
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px 12px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <img src="IMG_5608.jpeg" alt="Арт Майло">
+  <h1>Майло — морской эльф</h1>
+  <nav>
+    <button data-tab="about" class="active">О персонаже</button>
+    <button data-tab="gallery">Галерея</button>
+    <button data-tab="appearance">Внешность</button>
+  </nav>
+</header>
+
+<main>
+  <!-- О персонаже -->
+  <div id="about" class="tab active">
+    <div class="card">
+      <p>Майло — морской эльф, будущий герцог из семьи Эрландор. Ему 87 лет по человеческим меркам (примерно 11 лет для морских эльфов).
+      В детстве был очень нежным и зависимым от окружающих из-за чрезмерной любви отца. У него две сестры: старшая — дочь герцога и его жены, а младшая — возможно, дочь другой женщины.
+      Майло родился девочкой, но воспитывался как мальчик. Мать его не любила, так как он был внебрачным ребёнком.
+      У него был дворецкий Сир, который всегда был рядом. В возрасте около 10 лет (по человеческим меркам) он попытался сбежать из дома, но был атакован киллерами, погиб и переродился, потеряв память.
+      Любимая игрушка — мистер Чёрнилькин.</p>
+    </div>
+  </div>
+
+  <!-- Галерея -->
+  <div id="gallery" class="tab">
+    <div class="card">
+      <div class="gallery-container">
+        <div class="gallery-slide active"><img src="IMG_5607.jpeg" alt="Мем с Майло"></div>
+        <div class="gallery-slide"><img src="F01FC513-469F-4F6E-A8B1-917C49BE1E24.jpeg" alt="Референс"></div>
+        <div class="gallery-slide"><img src="IMG_5608.jpeg" alt="Арт"></div>
+        <div class="gallery-controls">
+          <button id="prev">&#10094;</button>
+          <button id="next">&#10095;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Внешность -->
+  <div id="appearance" class="tab">
+    <div class="card">
+      <img src="F01FC513-469F-4F6E-A8B1-917C49BE1E24.jpeg" alt="Внешний вид Майло" style="width:100%;border-radius:8px;">
+    </div>
+  </div>
+</main>
+
+<script>
+  // Переключение вкладок
+  const tabs = document.querySelectorAll('nav button');
+  const tabContents = document.querySelectorAll('.tab');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+tabContents.forEach(tab => {
+        tab.classList.toggle('active', tab.id === btn.dataset.tab);
+      });
+    });
+  });
+
+  // Галерея
+  let slideIndex = 0;
+  const slides = document.querySelectorAll('.gallery-slide');
+  const showSlide = (n) => {
+    slides.forEach(s => s.style.display = 'none');
+    slides[n].style.display = 'block';
+  }
+  document.getElementById('next').addEventListener('click', () => {
+    slideIndex = (slideIndex + 1) % slides.length;
+    showSlide(slideIndex);
+  });
+  document.getElementById('prev').addEventListener('click', () => {
+    slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+    showSlide(slideIndex);
+  });
+  showSlide(slideIndex);
+</script>
+</body>
+</html>
